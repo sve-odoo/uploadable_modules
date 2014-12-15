@@ -3,7 +3,7 @@ create_report
 
 Compatibility
 -------------
-Odoo 8.0: [x]
+Odoo 8.0: OK
 
 Abstract
 --------
