@@ -15,15 +15,18 @@ elif object.x_type == 'external':
 # - An underscore
 # - The name of the model, removed from any non strictly alphanumeric character
 # - An underscore
-# - The user-friendly name of the report, removed from any non strictly alphanumeric character
+# - The user-friendly name of the report, removed from any non strictly
+#   alphanumeric character
 # - An underscore
 # - document
 # Ex: __custo__.report_saleorder_orderconfirmation_document
 
-accepted_chars = map(chr, range(ord('a'), ord('z')+1)) + map(chr, range(ord('0'), ord('9')+1))
+accepted_chars = map(chr, range(ord('a'), ord('z') + 1)) + \
+    map(chr, range(ord('0'), ord('9') + 1))
 
 name_short = ''.join(c for c in object.x_name.lower() if c in accepted_chars)
-model_short = ''.join(c for c in object.x_model_id.model.lower() if c in accepted_chars)
+model_short = ''.join(
+    c for c in object.x_model_id.model.lower() if c in accepted_chars)
 
 technical_name = 'report_' + model_short + '_' + name_short
 
@@ -85,7 +88,8 @@ document_view_values = {
     'type': 'qweb',
     'arch': document_qweb,
 }
-document_view_id = view_mod.create(cr, uid, document_view_values, context=context)
+document_view_id = view_mod.create(
+    cr, uid, document_view_values, context=context)
 # and an XMLID for it
 document_xmlid_values = {
     'module': module,
@@ -113,7 +117,8 @@ if object.x_translate:
         'type': 'qweb',
         'arch': translate_qweb,
     }
-    translate_view_id = view_mod.create(cr, uid, translate_view_values, context=context)
+    translate_view_id = view_mod.create(
+        cr, uid, translate_view_values, context=context)
     # and an XMLID for it
     translate_xmlid_values = {
         'module': module,
@@ -145,11 +150,12 @@ pool['ir.values'].create(cr, uid, action_binding_values, context=context)
 self.unlink(cr, uid, object.id, context=context)
 
 # And display the newly created report
-action_dict = pool['ir.actions.act_window'].for_xml_id(cr, uid, 'base', 'ir_action_report_xml', context=context)
+action_dict = pool['ir.actions.act_window'].for_xml_id(
+    cr, uid, 'base', 'ir_action_report_xml', context=context)
 action_dict.update({
     'res_id': report_id,
     'view_mode': 'form,tree'
-    })
+})
 action_dict.pop('views')
 action_dict.pop('view_id')
 action = action_dict
