@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.values" id="default_x_type">
+            <field name="name">x_type</field>
+            <field name="model">x_create_report</field>
+            <field name="key">default</field>
+            <field name="key2"></field>
+            <field name="value_unpickle">external</field>
+            <!--field name="model_id" ref="model_x_create_report"/-->
+        </record>
+
+    </data>
+</openerp>

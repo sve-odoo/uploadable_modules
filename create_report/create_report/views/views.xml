@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="x_create_report_form" model="ir.ui.view">
+            <field name="name">create_report_x_create_report_form</field>
+            <field name="model">x_create_report</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Create a new report">
+                    <sheet>
+                        <group>
+                            <group string="Report Info">
+                                <field name="x_name"/>
+                                <field name="x_model_id" options="{'no_create': True}"/>
+                                <field name="x_type"/>
+                            </group>
+                            <group string="Translation">
+                                <field name="x_translate" help="Tick this box if you want the report to print in another language than the current user's."/>
+                                <field name="x_lang_path" 
+                                    placeholder="partner_id.lang"
+                                    attrs="{'invisible': [('x_translate', '=', False)]}"/>
+                                </group>
+                            </group>
+                            <group/>
+                            <group>
+                                <button string="Create the report" class="oe_highlight" name="%(create_report_server_action)d" type="action"/>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+
+
+            <record model="ir.actions.act_window" id="x_create_report_window_action">
+                <field name="name">Create a new report</field>
+                <field name="res_model">x_create_report</field>
+                <field name="view_mode">form</field>
+                <field name="target">new</field>
+                <field name="view_id" ref="x_create_report_form"/>
+            </record>
+
+
+            <menuitem id="x_create_report_menu" 
+                name="Create a new report"
+                parent="report.reporting_menuitem"
+                action="x_create_report_window_action"/>
+
+    </data>
+</openerp>

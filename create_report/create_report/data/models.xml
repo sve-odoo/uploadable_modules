@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="true">
+
+        <record model="ir.model" id="model_x_create_report">
+            <field name="name">Create report</field>
+            <field name="model">x_create_report</field>
+            <field name="state">manual</field>           
+        </record>
+
+        <record model="ir.model.fields" id="x_create_report_x_name">
+            <field name="name">x_name</field>
+            <field name="field_description">Name</field>
+            <field name="ttype">char</field>
+            <field name="required" eval="1"/>    
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_create_report"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_create_report_x_model_id">
+            <field name="name">x_model_id</field>
+            <field name="field_description">Model</field>
+            <field name="ttype">many2one</field> 
+            <field name="relation">ir.model</field>
+            <field name="required" eval="1"/>       
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_create_report"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_create_report_x_type">
+            <field name="name">x_type</field>
+            <field name="field_description">type</field>
+            <field name="ttype">selection</field>
+            <field name="selection">[('internal', 'Internal'), ('external', 'External')]</field>
+            <field name="required" eval="1"/>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_create_report"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_create_report_x_translate">
+            <field name="name">x_translate</field>
+            <field name="field_description">Translate</field>
+            <field name="ttype">boolean</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_create_report"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_create_report_x_lang_path">
+            <field name="name">x_lang_path</field>
+            <field name="field_description">Lang path</field>
+            <field name="ttype">char</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_create_report"/>                     
+        </record>
+
+    </data>
+</openerp>
