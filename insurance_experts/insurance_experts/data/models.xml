@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="true">
+
+        <record model="ir.model" id="x_damage">
+            <field name="name">Damage</field>
+            <field name="model">x_damage</field>
+            <field name="state">manual</field>           
+        </record>
+
+        <record model="ir.model.fields" id="x_damage_x_name">
+            <field name="name">x_name</field>
+            <field name="field_description">Name</field>
+            <field name="ttype">char</field>      
+            <field name="state">manual</field>       
+            <field name="model_id" ref="insurance_experts.x_damage"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="calendar_x_sinister_id">
+            <field name="name">x_sinister_id</field>
+            <field name="field_description">Sinister</field>
+            <field name="ttype">many2one</field> 
+            <field name="relation">project.issue</field>       
+            <field name="state">manual</field>       
+            <field name="model_id" ref="calendar.model_calendar_event"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="issue_x_damage_ids">
+            <field name="name">x_damage_ids</field>
+            <field name="field_description">Damage</field>
+            <field name="ttype">many2many</field>
+            <field name="relation">x_damage</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="project_issue.model_project_issue"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="partner_x_broker">
+            <field name="name">x_broker</field>
+            <field name="field_description">Broker</field>
+            <field name="ttype">boolean</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="base.model_res_partner"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="partner_x_insured">
+            <field name="name">x_insured</field>
+            <field name="field_description">Insured</field>
+            <field name="ttype">boolean</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="base.model_res_partner"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="issue_x_insured_id">
+            <field name="name">x_insured_id</field>
+            <field name="field_description">Insured</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">res.partner</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="project_issue.model_project_issue"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="issue_x_broker_id">
+            <field name="name">x_broker_id</field>
+            <field name="field_description">Broker</field>
+            <field name="ttype">many2one</field>
+            <field name="relation">res.partner</field>            
+            <field name="state">manual</field>       
+            <field name="model_id" ref="project_issue.model_project_issue"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="partner_x_broker_mission_ids">
+            <field name="name">x_broker_mission_ids</field>
+            <field name="field_description">Missions for this broker</field>
+            <field name="ttype">one2many</field>
+            <field name="relation">project.issue</field>            
+            <field name="relation_field">x_broker_id</field>
+            <field name="state">manual</field>       
+            <field name="model_id" ref="base.model_res_partner"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="partner_x_insured_mission_ids">
+            <field name="name">x_insured_mission_ids</field>
+            <field name="field_description">Missions for this insured</field>
+            <field name="ttype">one2many</field>
+            <field name="relation">project.issue</field>            
+            <field name="relation_field">x_insured_id</field>
+            <field name="state">manual</field>       
+            <field name="model_id" ref="base.model_res_partner"/>                     
+        </record>        
+    </data>
+</openerp>

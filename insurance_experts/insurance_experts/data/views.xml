@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="res_partner_form_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="name">res_partner_form_sve</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="website" position="after">
+                        <field name="x_insured"/>
+                        <field name="x_broker"/>
+                    </field>
+
+                    <page name="internal_notes" position="after">
+                        <page string="Missions linked to this Insured" attrs="{'invisible':[('x_insured','=',False)]}">
+                            <field name="x_insured_mission_ids">
+                                <tree editable="False">
+                                    <field name="project_id"/>
+                                    <field name="name"/>
+                                    <field name="x_broker_id"/>
+                                    <field name="x_insured_id"/>
+                                </tree>
+                            </field>                
+                        </page>
+
+                        <page string="Missions linked to this Broker" attrs="{'invisible':[('x_broker','=',False)]}">
+                            <field name="x_broker_mission_ids">
+                                <tree editable="False">
+                                    <field name="project_id"/>
+                                    <field name="name"/>
+                                    <field name="x_broker_id"/>
+                                    <field name="x_insured_id"/>
+                                </tree>
+                            </field>                
+                        </page>
+
+                    </page>
+
+                </data>
+            </field>
+        </record>
+
+        <record id="res_partner_search_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="name">res_partner_search_sve</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <data>
+                    <filter name="supplier" position="after">
+                        <separator/>
+                        <filter string="Insured" name="insured" domain="[('x_insured', '=', True)]"/>
+                        <filter string="Broker" name="broker" domain="[('x_broker', '=', True)]"/>
+                    </filter>
+                </data>
+            </field>
+        </record>
+
+        <record id="calendar_event_form_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="name">calendar_event_form_sve</field>
+            <field name="model">calendar.event</field>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="categ_ids" position="after">
+                        <field name="x_sinister_id"/>
+                    </field>
+                </data>
+            </field>
+        </record>
+
+        <record id="calendar_event_search_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
+            <field name="name">calendar_event_search_sve</field>
+            <field name="model">calendar.event</field>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="user_id" position="after">
+                        <field name="x_sinister_id"/>
+                    </field>
+                </data>
+            </field>
+        </record>
+
+
+        <record id="project_issue_form_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="project_issue.project_issue_form_view"/>
+            <field name="name">project_issue_form_sve</field>
+            <field name="model">project.issue</field>
+            <field name="arch" type="xml">
+                <data>
+                    <page string="Description" position="after">
+                        <page string="Linked contacts">
+                            <group>
+                                <group>
+                                    <field name="x_insured_id" 
+                                        domain="[('x_insured','=',True)]" 
+                                        context="{'default_x_insured':True}"/>
+                                </group>
+                                <group>
+                                    <field name="x_broker_id"
+                                        domain="[('x_broker','=',True)]" 
+                                        context="{'default_x_broker':True}"/>
+                                </group>
+                            </group>
+                        </page>
+                    </page>
+
+                    <field name="id" position="before">
+                        <field name="x_damage_ids" widget="many2many_tags"/>
+                    </field>
+
+                    <div class="oe_right" position="after"> 
+                        <div class="oe_right oe_button_box" name="buttons"> 
+                            <button class="oe_inline oe_stat_button" 
+                                icon="fa-calendar" 
+                                string="Meetings"
+                                type="action" name="%(calendar.action_calendar_event)d" 
+                                context="{
+                                    'search_default_x_sinister_id': active_id, 
+                                    'default_x_sinister_id': active_id
+                                    }"/>
+                        </div>
+                    </div>
+
+                </data>
+            </field>
+        </record>
+
+        <record id="project_issue_search_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="project_issue.view_project_issue_filter"/>
+            <field name="name">project_issue_search_sve</field>
+            <field name="model">project.issue</field>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="project_id" position="after">
+                        <field name="x_broker_id"/>
+                    </field>
+
+                    <group position="inside">
+                        <filter name="x_broker_id" string="Broker" context="{'group_by': 'x_broker_id'}"/>
+                    </group>
+
+                </data>
+            </field>
+        </record>
+
+
+
+
+
+
+
+
+
+    </data>
+</openerp>
