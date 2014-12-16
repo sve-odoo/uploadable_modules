@@ -7,7 +7,7 @@ context.update({
 if object.type == "qweb":
     parent = object.inherit_id
     current = object
-    while parent and current.mode != 'base':
+    while parent and current.mode != 'primary':
         current = parent
         parent = parent.inherit_id
     domain += [('res_id', '=', current.id)]
