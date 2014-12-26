@@ -15,36 +15,38 @@
                                 <field name="x_model_id" options="{'no_create': True}"/>
                                 <field name="x_type"/>
                             </group>
-                            <group string="Translation">
-                                <field name="x_translate" help="Tick this box if you want the report to print in another language than the current user's."/>
+                            <group string="Advanced">
+                                <field name="x_translate" help="Tick this box if you want the report to be printed in another language than the current user's."/>
                                 <field name="x_lang_path" 
                                     placeholder="partner_id.lang"
-                                    attrs="{'invisible': [('x_translate', '=', False)]}"/>
-                                </group>
+                                    attrs="{'invisible': [('x_translate', '=', False)], 'required': [('x_translate', '=', True)]}"/>
+                                <field name="x_suffix" placeholder=".sve" help="Tick this to add a suffix to the created views. Use this suffix in a filter to find the user-created views."/>
+                                <field name="x_model_in_view" help="Qweb views don't require that the model is filled. Tick this to fill the model anyway, to be able to group the view by model."/>
                             </group>
-                            <group/>
-                            <group>
-                                <button string="Create the report" class="oe_highlight" name="%(create_report_server_action)d" type="action"/>
-                            </group>
-                        </sheet>
-                    </form>
-                </field>
-            </record>
+                        </group>
+                        <footer>
+                            <button string="Create the report" class="oe_highlight" name="%(create_report_server_action)d" type="action"/> or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
 
-            <record model="ir.actions.act_window" id="x_create_report_window_action">
-                <field name="name">Create a new report</field>
-                <field name="res_model">x_create_report</field>
-                <field name="view_mode">form</field>
-                <field name="target">new</field>
-                <field name="view_id" ref="x_create_report_form"/>
-            </record>
+        <record model="ir.actions.act_window" id="x_create_report_window_action">
+            <field name="name">Create a new report</field>
+            <field name="res_model">x_create_report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="x_create_report_form"/>
+        </record>
 
 
-            <menuitem id="x_create_report_menu" 
-                name="Create a new report"
-                parent="report.reporting_menuitem"
-                action="x_create_report_window_action"/>
+        <menuitem id="x_create_report_menu" 
+            name="Create a new report"
+            parent="report.reporting_menuitem"
+            action="x_create_report_window_action"/>
 
     </data>
 </openerp>
