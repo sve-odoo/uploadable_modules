@@ -101,7 +101,6 @@ document_view_values = {
     'name': document_technical_name + suffix,
     'type': 'qweb',
     'arch': document_qweb,
-    'model': object.x_model_id.model if object.x_model_in_view else False
 }
 document_view_id = view_mod.create(
     cr, uid, document_view_values, context=context)
@@ -130,7 +129,6 @@ if object.x_translate:
         'name': technical_name + suffix,
         'type': 'qweb',
         'arch': translate_qweb,
-        'model': object.x_model_id.model if object.x_model_in_view else False
     }
     translate_view_id = view_mod.create(
         cr, uid, translate_view_values, context=context)

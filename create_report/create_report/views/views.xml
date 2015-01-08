@@ -21,7 +21,6 @@
                                     placeholder="partner_id.lang"
                                     attrs="{'invisible': [('x_translate', '=', False)], 'required': [('x_translate', '=', True)]}"/>
                                 <field name="x_suffix" placeholder=".sve" help="Tick this to add a suffix to the created views. Use this suffix in a filter to find the user-created views."/>
-                                <field name="x_model_in_view" help="Qweb views don't require that the model is filled. Tick this to fill the model anyway, to be able to group the view by model."/>
                             </group>
                         </group>
                         <footer>

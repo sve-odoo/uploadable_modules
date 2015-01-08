@@ -61,13 +61,5 @@
             <field name="model_id" ref="model_x_create_report"/>                     
         </record>
 
-        <record model="ir.model.fields" id="x_create_report_x_model_in_view">
-            <field name="name">x_model_in_view</field>
-            <field name="field_description">Fill model field in views</field>
-            <field name="ttype">boolean</field>            
-            <field name="state">manual</field>       
-            <field name="model_id" ref="model_x_create_report"/>                     
-        </record>
-
     </data>
 </openerp>
