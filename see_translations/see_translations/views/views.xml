@@ -12,7 +12,7 @@
                     <field name="priority" position="after">
                         <button string="⇒ Associated translations" 
                                 type="action" 
-                                name="%(see_translations.see_translations_action)d" class="oe_link" colspan="2"/>
+                                name="%(see_translations.view_translations_action)d" class="oe_link" colspan="2"/>
                     </field>
                 </data>
             </field>
@@ -33,6 +33,22 @@
                 </data>
             </field>
         </record>
+
+        <record id="ir_model_form" model="ir.ui.view">
+            <field name="inherit_id" ref="base.view_model_form"/>
+            <field name="name">>see_translations.ir_model_form</field>
+            <field name="model">ir.model</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='field_id']/tree" position="inside">
+                        <button name="%(see_translations.field_translations_action)d" 
+                                type="action" icon="terp-translate"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
 
     </data>
 </openerp>

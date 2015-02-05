@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record model="ir.actions.server" id="see_translations_action">
+        <record model="ir.actions.server" id="view_translations_action">
             <field name="name">Find translations of the current view</field>
             <field name="model_id" eval="ref('base.model_ir_ui_view')"/>
             <field name="state">code</field>
@@ -32,8 +32,7 @@ else:
         'default_name': object.model,
     })
 
-action_dict = pool['ir.actions.act_window'].for_xml_id(
-    cr, uid, 'base', 'action_translation', context=context)
+action_dict = env['ir.actions.act_window'].for_xml_id('base', 'action_translation')
 action_dict.update({
     'domain': domain,
     'context': context,
@@ -41,5 +40,33 @@ action_dict.update({
 action = action_dict
             </field>
         </record>
+
+<record model="ir.actions.server" id="field_translations_action">
+            <field name="name">Find translations of the current field</field>
+            <field name="model_id" eval="ref('base.model_ir_model_fields')"/>
+            <field name="state">code</field>
+            <field name="condition">True</field>
+            <field name="sequence">5</field>
+            <field name="code">
+name = "%s,%s" % (object.model_id.model, object.name)
+domain = [('name', '=', name), ('type', '=', 'field')]
+source = model.with_context(dict(context, lang=None)).browse(object.id).field_description
+
+context.update({
+    'default_module': '__custo__',
+    'default_type': 'field',
+    'default_name': name,
+    'default_source': source
+    })
+
+action_dict = env['ir.actions.act_window'].for_xml_id('base', 'action_translation')
+action_dict.update({
+    'domain': domain,
+    'context': context,
+})
+action = action_dict
+            </field>
+        </record>
+
     </data>
 </openerp>

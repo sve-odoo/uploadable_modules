@@ -22,8 +22,7 @@ else:
         'default_name': object.model,
     })
 
-action_dict = pool['ir.actions.act_window'].for_xml_id(
-    cr, uid, 'base', 'action_translation', context=context)
+action_dict = env['ir.actions.act_window'].for_xml_id('base', 'action_translation')
 action_dict.update({
     'domain': domain,
     'context': context,
