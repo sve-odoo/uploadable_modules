@@ -79,7 +79,7 @@ Translation = env['ir.translation']
 field_name = object.name
 model_name = object.model_id.model
 
-labels_en = [tup[1] for tup in env[model_name].with_context(lang='en_US').fields_get([field_name])[field_name]['selection']]
+labels_en = [tup[1] for tup in env[model_name]._fields[field_name]._column_selection]
 
 name = "%s,%s" % (model_name, field_name)
 domain = [('name', '=', name), ('type', '=', 'selection')]
