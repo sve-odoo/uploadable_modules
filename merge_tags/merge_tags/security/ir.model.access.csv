@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+x_merge_partner_tags_technical,x_merge_partner_tags_technical,model_x_merge_partner_tags,base.group_no_one,1,1,1,1
+

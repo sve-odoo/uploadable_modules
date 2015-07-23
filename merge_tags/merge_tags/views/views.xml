@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="x_merge_partner_tags_form" model="ir.ui.view">
+            <field name="name">x_merge_partner_tags_form</field>
+            <field name="model">x_merge_partner_tags</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Merge tags">
+                    <sheet>
+                        <group string="Tags that will be merged into the destination tag">
+                            <field name="x_tag_ids" nolabel="1" widget="many2many_tags" colspan="2" options="{'no_create': True}"/>
+                            <p class="alert alert-info" colspan="2">The selected tags will be disabled, not deleted</p>
+                        </group>
+                        <group string="Destination tag name">
+                            <field name="x_name" nolabel="1"/>
+                        </group>
+                        <footer>
+                            <button string="Merge" class="oe_highlight" name="%(merge_partner_tags_server_action)d" type="action"/> or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="x_merge_partner_tags_window_action">
+            <field name="name">Merge partner tags</field>
+            <field name="res_model">x_merge_partner_tags</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'default_x_tag_ids': active_ids}</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="x_merge_partner_tags_form"/>
+        </record>
+
+        <record model="ir.values" id="x_merge_partner_tags_ir_value">
+            <field name="name">Merge partner tags</field>
+            <field name="model">res.partner.category</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('x_merge_partner_tags_window_action'))"/>
+        </record>
+
+    </data>
+</openerp>

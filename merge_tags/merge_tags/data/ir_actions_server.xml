@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.actions.server" id="merge_partner_tags_server_action">
+            <field name="name">Merge tags</field>
+            <field name="model_id" eval="ref('model_x_merge_partner_tags')"/>
+            <field name="state">code</field>
+            <field name="condition">True</field>
+            <field name="sequence">5</field>
+            <field name="code">
+tags = object.x_tag_ids
+partners = tags.mapped('partner_ids')
+env['res.partner.category'].create({
+    'name': object.x_name,
+    'partner_ids': [(6, 0, partners.ids)]
+    })
+tags.write({'active': False})
+            </field>
+        </record>
+    </data>
+</openerp>
