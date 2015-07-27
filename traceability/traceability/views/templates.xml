@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report
+            id="action_report_upstream_traceability"
+            model="stock.production.lot"
+            string="Upstream Traceability"
+            report_type="qweb-html"
+            name="traceability.report_upstream_traceability"
+            />
+
+        <template id="report_upstream_traceability">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.internal_layout">
+                        <div class="page">
+                            <h2>Lot <span t-field="o.display_name"/></h2>
+
+                            <t t-if="o.quant_ids">
+
+                                <h3>Upstream</h3>
+                                This Lot is present in the following locations:
+                                
+                                <t t-set="incr_browse" t-value="env['x_incr'].browse(1)"/>
+                                <t t-esc="incr_browse.write({'x_incr':1, 'x_levels':False}) and ''"/>
+
+                                <table class="table tree">
+                                    <t t-foreach="o.quant_ids.filtered(lambda x:x.qty>=0)" t-as="quant">
+                                        <tr t-attf-class="treegrid-{{incr_browse.x_incr}}">
+                                            <td>
+                                                <span>Lot</span>
+                                                <t t-if="quant.lot_id">
+                                                    <span> </span>
+                                                    <strong t-field="quant.lot_id"/>
+                                                </t>
+                                                <span> of </span>
+                                                <span t-field="quant.qty"/>
+                                                <span t-field="quant.product_id.uom_id"/>
+                                                <span> of product </span>
+                                                <span t-field="quant.product_id"/>
+                                                <span> in </span>
+                                                <span t-field="quant.location_id"/>
+
+                                            </td><td></td>
+                                        </tr>
+                                        <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr+1, 'x_levels':incr_browse.x_incr}) and ''"/>
+                                        
+
+                                        <t t-foreach="quant.history_ids.sorted(key=lambda x:x.date, reverse=True)" t-as="move">
+                                            <t t-call="traceability.report_upstream_traceability_recursive"/>
+
+                                        </t>
+                                        <t t-set="buthelast" t-value="','.join(incr_browse.x_levels.split(',')[:-1])"/>
+                                        <t t-esc="incr_browse.write({'x_levels':buthelast}) and ''"/>
+                                    </t>
+                                    <t t-set="buthelast" t-value="','.join(incr_browse.x_levels.split(',')[:-1])"/>
+                                    <t t-esc="incr_browse.write({'x_levels':buthelast}) and ''"/>
+
+                                </table>
+                            </t>
+                            <t t-if="not o.quant_ids">
+                                This lot isn't present in any location.
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+
+        <template id="report_upstream_traceability_recursive">
+
+            <tr t-attf-class="treegrid-{{incr_browse.x_incr}} treegrid-parent-{{incr_browse.x_levels.split(',')[-1]}}">
+                <td>
+                    <t t-if="move.raw_material_production_id">
+                        <span>This lot was in location </span>
+                        <span t-field="move.location_id"/>
+                        <span> and was used by </span><strong t-field="move.raw_material_production_id"/>
+                    </t>
+
+                    <t t-if="move.picking_id">
+                        <t t-if="move.picking_id.picking_type_code == 'outgoing'">
+                            <span>This lot was in location </span>
+                            <span t-field="move.location_id"/>
+                            <span> and was delivered to </span>
+                            <strong t-field="move.picking_id.partner_id"/>
+                            <span> via DO </span>
+                            <strong t-field="move.picking_id"/>
+                            <!--span class="label label-primary" t-if="move.picking_id.sale_id">
+                                <span t-field="move.picking_id.sale_id"/>
+                            </span-->
+                        </t>
+                        <t t-if="move.picking_id.picking_type_code == 'incoming'">
+                            <span>This lot was received in location </span>
+                            <span t-field="move.location_dest_id"/>
+                            <span> from </span>
+                            <strong t-field="move.picking_id.partner_id"/>
+                            <span> via IS </span>
+                            <strong t-field="move.picking_id"/>
+                            <!--t t-foreach="env['purchase.order'].search([('picking_ids.id', '=', move.picking_id.id)])" t-as="po">
+                                <span>&amp;nbsp;</span>
+                                <span t-field="po.name" class="label label-primary"/>
+                            </t-->
+                        </t>
+                        <t t-if="move.picking_id.picking_type_code == 'internal'">
+                            <span>This lot was in location </span>
+                            <span t-field="move.location_id"/>
+                            <span> and was moved to </span>
+                            <span t-field="move.location_dest_id"/>
+                            <span> by picking </span>
+                            <strong t-field="move.picking_id"/>
+                        </t>
+
+                    </t>
+
+                    <t t-if="move.inventory_id">
+                        <span>This lot was created by inventory </span>
+                        <span t-field="move.inventory_id"/>
+                    </t>
+
+                    <t t-if="move.production_id">
+                        This lot of <span t-field="move.product_uom_qty"/><span t-field="move.product_uom"/>
+                        has been produced by <strong t-field="move.production_id"/>, using following lots:
+                        <t t-esc="incr_browse.write({'x_levels':incr_browse.x_levels + ',' + str(incr_browse.x_incr)}) and ''"/>
+                    </t>
+
+                </td>
+                <td><span class="text-muted" t-field="move.date"/></td>
+            </tr>
+            <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr + 1}) and ''"/>
+            
+            <t t-if="move.production_id">
+                <t t-foreach="move.production_id.move_lines2.mapped('quant_ids').filtered(lambda x:x.qty>=0)" t-as="quant">
+                    <tr t-attf-class="treegrid-{{incr_browse.x_incr}} treegrid-parent-{{incr_browse.x_levels.split(',')[-1]}}">
+                        <td>
+                            <span>Lot</span>
+                            <t t-if="quant.lot_id">
+                                <span> </span>
+                                <strong t-field="quant.lot_id"/>
+                            </t>
+                            <span> of </span>
+                            <span t-field="quant.qty"/>
+                            <span t-field="quant.product_id.uom_id"/>
+                            <span> of </span>
+                            <span t-field="quant.product_id"/>
+
+                            <t t-esc="incr_browse.write({'x_levels':incr_browse.x_levels + ',' + str(incr_browse.x_incr)}) and ''"/>
+
+                        </td><td></td>
+                    </tr>
+                    <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr + 1}) and ''"/>
+                    <t t-foreach="quant.history_ids.sorted(key=lambda x:x.date, reverse=True)" t-as="move">
+                        <t t-call="traceability.report_upstream_traceability_recursive"/>
+
+                    </t>
+                    <t t-set="buthelast" t-value="','.join(incr_browse.x_levels.split(',')[:-1])"/>
+                    <t t-esc="incr_browse.write({'x_levels':buthelast}) and ''"/>
+                </t>
+                <t t-set="buthelast" t-value="','.join(incr_browse.x_levels.split(',')[:-1])"/>
+                <t t-esc="incr_browse.write({'x_levels':buthelast}) and ''"/>
+            </t>
+
+
+
+
+        </template>
+
+
+
+
+
+    </data>
+</openerp>

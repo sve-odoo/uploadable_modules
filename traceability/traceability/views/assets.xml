@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="report_assets_treegrid" inherit_id="website.assets_frontend" name="Report assets treegrid">   
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/traceability/static/lib/treegrid/js/jquery.treegrid.min.js"></script>
+                <script type="text/javascript" src="/traceability/static/lib/treegrid/js/jquery.treegrid.bootstrap3.js"></script>
+                <script type="text/javascript">
+                  $('.tree').treegrid();
+                  $('.tree').treegrid('collapseAll');
+                </script>
+                <link rel="stylesheet" href="/traceability/static/lib/treegrid/css/jquery.treegrid.css"/>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

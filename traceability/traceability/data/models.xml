@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="true">
+
+        <record model="ir.model" id="model_x_incr">
+            <field name="name">Incr</field>
+            <field name="model">x_incr</field>
+            <field name="state">manual</field>           
+        </record>
+
+        <record model="ir.model.fields" id="x_merge_partner_tags_x_name">
+            <field name="name">x_incr</field>
+            <field name="field_description">Increment</field>
+            <field name="ttype">integer</field>
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_incr"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_merge_partner_tags_x_tag_ids">
+            <field name="name">x_levels</field>
+            <field name="field_description">Levels stack</field>
+            <field name="ttype">char</field> 
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_incr"/>                     
+        </record>
+
+    </data>
+</openerp>

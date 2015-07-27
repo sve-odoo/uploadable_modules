@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="record_x_incr_1" model="x_incr">
+            <field name="x_incr" eval="0"/>
+            <field name="x_levels"></field>
+        </record>
+
+
+    </data>
+</openerp>
