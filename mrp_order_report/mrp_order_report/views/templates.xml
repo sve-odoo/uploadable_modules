@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report
+            id="action_report_mrp_order"
+            model="mrp.production"
+            string="MRP Order"
+            report_type="qweb-pdf"
+            name="mrp_order_report.report_mrp_order"
+            />
+
+        <template id="report_mrp_order">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+
+                            <h2>Manufacturing Order - <span t-field="o.display_name"/></h2>
+
+                            <div class="row mt32 mb32" id="information">
+                                <div class="col-xs-2">
+                                    <strong>Operator:</strong>
+                                    <p t-field="o.user_id"/>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <strong>Warehouse:</strong>
+                                    <p t-field="env['stock.warehouse'].search([('lot_stock_id', '=', o.location_dest_id.id)]).name"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>Planned date:</strong>
+                                    <p t-field="o.date_planned"/>
+                                </div>
+                                <div class="col-xs-2" t-if="o.sale_name">
+                                    <strong>Sales Order:</strong>
+                                    <p t-field="o.sale_name"/>
+                                </div>
+
+                            </div>
+
+                            <t t-set="move_created_ids" t-value="o.move_created_ids.filtered(lambda r: r.state != 'cancel')"/>
+                            <t t-if="move_created_ids">
+                                <h3>Products to produce</h3>
+
+                                <table class="table table-bordered col-xs-12 mb32" style="border: 1.5px solid black;"> 
+                                    <thead> 
+                                        <tr>
+                                            <th class="text-left col-xs-4" style="border: 1.5px solid black;"><strong>Product</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>UoM</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Th. quantity</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Actual quantity</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Lot N°</strong></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <t t-foreach="move_created_ids.sorted(key=lambda x: x.product_id.default_code)" t-as="l">
+                                            <tr>
+                                                <td class="text-left" style="border: 1.5px solid black;"><span t-field="l.product_id"/>
+                                                    <img class="col-xs-12" t-if="l.product_id.image" t-att-src="'data:image/png;base64,%s' % l.product_id.image"/>
+                                                </td>
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom_qty"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"></td> 
+                                            </tr>
+                                        </t>
+                                    </tbody> 
+                                </table>
+                            </t>
+                            <t t-set="move_created_ids2" t-value="o.move_created_ids2.filtered(lambda r: r.state != 'cancel')"/>
+                            <t t-if="move_created_ids2">
+                                <h3>Produced lots</h3>
+                                <table class="table table-bordered col-xs-12 mb32" style="border: 1.5px solid black;"> 
+                                    <thead> 
+                                        <tr>
+                                            <th class="text-left col-xs-4" style="border: 1.5px solid black;"><strong>Product</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>UoM</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Actual quantity</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Lot N°</strong></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <t t-foreach="move_created_ids2.sorted(key=lambda x: x.product_id.default_code)" t-as="l">
+                                            <tr>
+                                                <td class="text-left" style="border: 1.5px solid black;"><span t-field="l.product_id"/>
+                                                    <img class="col-xs-12" t-if="l.product_id.image" t-att-src="'data:image/png;base64,%s' % l.product_id.image"/>
+                                                </td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom_qty"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.restrict_lot_id"/></td> 
+                                            </tr>
+                                        </t>
+                                    </tbody> 
+                                </table>
+                            </t>
+
+                            <t t-set="move_lines" t-value="o.move_lines.filtered(lambda r: r.state != 'cancel')"/>
+                            <t t-if="move_lines">
+                                <h3>Products to consume</h3>
+                                <table class="table table-bordered col-xs-12 mb32" style="border: 1.5px solid black;"> 
+                                    <thead> 
+                                        <tr>
+                                            <th class="text-left col-xs-4" style="border: 1.5px solid black;"><strong>Product</strong></th>
+                                            <th class="text-center col-xs-1" style="border: 1.5px solid black;"><strong>UoM</strong></th>
+                                            <th class="text-center col-xs-1" style="border: 1.5px solid black;"><strong>Th. quantity</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Th. lot</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Actual quantity</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Lot N°</strong></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <t t-foreach="move_lines.sorted(key=lambda x: x.product_id.default_code)" t-as="l">
+                                            <tr>
+                                                <td class="text-left" style="border: 1.5px solid black;"><span t-field="l.product_id"/>
+                                                    <img class="col-xs-12" t-if="l.product_id.image" t-att-src="'data:image/png;base64,%s' % l.product_id.image"/>
+                                                </td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom_qty"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;">
+                                                    <t t-foreach="l.reserved_quant_ids.filtered(lambda x: x.lot_id)" t-as="q">
+                                                        <span t-field="q.lot_id"/>: <span t-field="q.qty"/> <span t-field="q.product_id.uom_id"/>
+                                                        <t t-if="not q_first"><br/></t>
+                                                    </t>
+                                                </td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"></td> 
+                                            </tr>
+                                        </t>
+                                    </tbody> 
+                                </table>
+                            </t>
+                            <t t-set="move_lines2" t-value="o.move_lines2.filtered(lambda r: r.state != 'cancel')"/>
+                            <t t-if="move_lines2">
+                                <h3>Consumed lots</h3>
+                                <table class="table table-bordered col-xs-12 mb32" style="border: 1.5px solid black;"> 
+                                    <thead> 
+                                        <tr>
+                                            <th class="text-left col-xs-4" style="border: 1.5px solid black;"><strong>Product</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>UoM</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Actual quantity</strong></th>
+                                            <th class="text-center col-xs-2" style="border: 1.5px solid black;"><strong>Lot N°</strong></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <t t-foreach="move_lines2.sorted(key=lambda x: x.product_id.default_code)" t-as="l">
+                                            <tr>
+                                                <td class="text-left" style="border: 1.5px solid black;"><span t-field="l.product_id"/>
+                                                    <img class="col-xs-12" t-if="l.product_id.image" t-att-src="'data:image/png;base64,%s' % l.product_id.image"/>
+                                                </td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.product_uom_qty"/></td> 
+                                                <td class="text-center" style="border: 1.5px solid black;"><span t-field="l.restrict_lot_id"/></td> 
+                                            </tr>
+                                        </t>
+                                    </tbody> 
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>
