@@ -10,7 +10,7 @@
                 $(document).ready(function() {
                     $('.tree').treegrid({
                         'initialState': 'collapsed',
-                        onChange: function() {$(this).find(" td:nth-child(2) span").toggle();}, 
+                        onChange: function() {$(this).find(" td:nth-child(2) span[name='unfold_note']").toggle();}, 
                   });
                 });
                 </script>

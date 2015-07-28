@@ -43,7 +43,7 @@
                                                 <strong t-field="quant.location_id"/>
 
                                             </td>
-                                            <td><span class="text-muted">Unfold to show lot history</span></td>
+                                            <td><span class="text-muted" name="unfold_note">Unfold to show lot history</span></td>
                                         </tr>
                                         <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr+1, 'x_levels':incr_browse.x_incr}) and ''"/>
 
@@ -146,7 +146,7 @@
                             <t t-esc="incr_browse.write({'x_levels':incr_browse.x_levels + ',' + str(incr_browse.x_incr)}) and ''"/>
 
                         </td>
-                        <td><span class="text-muted">Unfold to show lot history</span></td>
+                        <td><span class="text-muted" name="unfold_note">Unfold to show lot history</span></td>
                     </tr>
                     <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr + 1}) and ''"/>
                     <t t-foreach="quant.history_ids.sorted(key=lambda x:x.date, reverse=True)" t-as="move">
