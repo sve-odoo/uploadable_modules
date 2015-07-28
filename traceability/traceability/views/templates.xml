@@ -82,34 +82,34 @@
 
                     <t t-if="move.picking_id">
                         <t t-if="move.picking_id.picking_type_code == 'outgoing'">
-                            <span>This lot was in location </span>
-                            <span t-field="move.location_id"/>
-                            <span> and was delivered to </span>
+                            <span>This lot was delivered from </span>
+                            <strong t-field="move.location_id"/>
+                            <span> to </span>
                             <strong t-field="move.picking_id.partner_id"/>
-                            <span> via DO </span>
+                            <span> through </span>
                             <strong t-field="move.picking_id"/>
-                            <!--span class="label label-primary" t-if="move.picking_id.sale_id">
+                            <span class="label label-primary" t-if="move.picking_id.sale_id">
                                 <span t-field="move.picking_id.sale_id"/>
-                            </span-->
+                            </span>
                         </t>
                         <t t-if="move.picking_id.picking_type_code == 'incoming'">
                             <span>This lot was received in location </span>
-                            <span t-field="move.location_dest_id"/>
+                            <strong t-field="move.location_dest_id"/>
                             <span> from </span>
                             <strong t-field="move.picking_id.partner_id"/>
-                            <span> via IS </span>
+                            <span> through </span>
                             <strong t-field="move.picking_id"/>
-                            <!--t t-foreach="env['purchase.order'].search([('picking_ids.id', '=', move.picking_id.id)])" t-as="po">
+                            <t t-foreach="env['purchase.order'].search([('order_line.move_ids.id', '=', move.id)])" t-as="po">
                                 <span>&amp;nbsp;</span>
-                                <span t-field="po.name" class="label label-primary"/>
-                            </t-->
+                                <span t-field="po.name" class="label label-success"/>
+                            </t>
                         </t>
                         <t t-if="move.picking_id.picking_type_code == 'internal'">
-                            <span>This lot was in location </span>
+                            <span>This lot was moved from </span>
                             <span t-field="move.location_id"/>
-                            <span> and was moved to </span>
+                            <span> to </span>
                             <span t-field="move.location_dest_id"/>
-                            <span> by picking </span>
+                            <span> through </span>
                             <strong t-field="move.picking_id"/>
                         </t>
 
@@ -117,11 +117,11 @@
 
                     <t t-if="move.inventory_id">
                         <span>This lot was created by inventory </span>
-                        <span t-field="move.inventory_id"/>
+                        <strong t-field="move.inventory_id"/>
                     </t>
 
                     <t t-if="move.production_id">
-                        This lot of <span t-field="move.product_uom_qty"/><span t-field="move.product_uom"/>
+                        This lot of <span t-field="move.product_uom_qty"/> <span t-field="move.product_uom"/>
                         has been produced by <strong t-field="move.production_id"/>, using following lots:
                         <t t-esc="incr_browse.write({'x_levels':incr_browse.x_levels + ',' + str(incr_browse.x_incr)}) and ''"/>
                     </t>
