@@ -37,15 +37,15 @@
                                                 <span> of </span>
                                                 <span t-field="quant.qty"/>
                                                 <span t-field="quant.product_id.uom_id"/>
-                                                <span> of product </span>
-                                                <span t-field="quant.product_id"/>
+                                                <span> of </span>
+                                                <strong t-field="quant.product_id"/>
                                                 <span> in </span>
-                                                <span t-field="quant.location_id"/>
+                                                <strong t-field="quant.location_id"/>
 
-                                            </td><td></td>
+                                            </td>
+                                            <td><span class="text-muted">Unfold to show lot history</span></td>
                                         </tr>
                                         <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr+1, 'x_levels':incr_browse.x_incr}) and ''"/>
-                                        
 
                                         <t t-foreach="quant.history_ids.sorted(key=lambda x:x.date, reverse=True)" t-as="move">
                                             <t t-call="traceability.report_upstream_traceability_recursive"/>
@@ -68,8 +68,6 @@
             </t>
         </template>
 
-
-
         <template id="report_upstream_traceability_recursive">
 
             <tr t-attf-class="treegrid-{{incr_browse.x_incr}} treegrid-parent-{{incr_browse.x_levels.split(',')[-1]}}">
@@ -86,7 +84,7 @@
                             <strong t-field="move.location_id"/>
                             <span> to </span>
                             <strong t-field="move.picking_id.partner_id"/>
-                            <span> through </span>
+                            <span> by </span>
                             <strong t-field="move.picking_id"/>
                             <span class="label label-primary" t-if="move.picking_id.sale_id">
                                 <span t-field="move.picking_id.sale_id"/>
@@ -97,10 +95,10 @@
                             <strong t-field="move.location_dest_id"/>
                             <span> from </span>
                             <strong t-field="move.picking_id.partner_id"/>
-                            <span> through </span>
+                            <span> by </span>
                             <strong t-field="move.picking_id"/>
                             <t t-foreach="env['purchase.order'].search([('order_line.move_ids.id', '=', move.id)])" t-as="po">
-                                <span>&amp;nbsp;</span>
+                                <span t-if="not po_first">&amp;nbsp;</span>
                                 <span t-field="po.name" class="label label-success"/>
                             </t>
                         </t>
@@ -109,10 +107,9 @@
                             <span t-field="move.location_id"/>
                             <span> to </span>
                             <span t-field="move.location_dest_id"/>
-                            <span> through </span>
+                            <span> by </span>
                             <strong t-field="move.picking_id"/>
                         </t>
-
                     </t>
 
                     <t t-if="move.inventory_id">
@@ -144,11 +141,12 @@
                             <span t-field="quant.qty"/>
                             <span t-field="quant.product_id.uom_id"/>
                             <span> of </span>
-                            <span t-field="quant.product_id"/>
+                            <strong t-field="quant.product_id"/>
 
                             <t t-esc="incr_browse.write({'x_levels':incr_browse.x_levels + ',' + str(incr_browse.x_incr)}) and ''"/>
 
-                        </td><td></td>
+                        </td>
+                        <td><span class="text-muted">Unfold to show lot history</span></td>
                     </tr>
                     <t t-esc="incr_browse.write({'x_incr':incr_browse.x_incr + 1}) and ''"/>
                     <t t-foreach="quant.history_ids.sorted(key=lambda x:x.date, reverse=True)" t-as="move">
@@ -162,14 +160,7 @@
                 <t t-esc="incr_browse.write({'x_levels':buthelast}) and ''"/>
             </t>
 
-
-
-
         </template>
-
-
-
-
 
     </data>
 </openerp>
