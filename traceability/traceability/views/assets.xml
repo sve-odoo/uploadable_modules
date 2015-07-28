@@ -8,11 +8,9 @@
                 <script type="text/javascript" src="/traceability/static/lib/treegrid/js/jquery.treegrid.bootstrap3.js"></script>
                 <script type="text/javascript">
                 $(document).ready(function() {
-                    $('.tree').treegrid({'initialState': 'collapsed',
-                    onChange: function() {
-                        $(this).find(" td:nth-child(2) span").toggle();
-                    }, 
-
+                    $('.tree').treegrid({
+                        'initialState': 'collapsed',
+                        onChange: function() {$(this).find(" td:nth-child(2) span").toggle();}, 
                   });
                 });
                 </script>
