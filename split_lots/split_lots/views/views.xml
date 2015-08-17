@@ -35,13 +35,6 @@
             <field name="view_id" ref="x_split_lots_form"/>
         </record>
 
-        <!--record model="ir.values" id="x_merge_partner_tags_ir_value">
-            <field name="name">Merge partner tags</field>
-            <field name="model">res.partner.category</field>
-            <field name="key2">client_action_multi</field>
-            <field name="value" eval="'ir.actions.act_window,' + str(ref('x_merge_partner_tags_window_action'))"/>
-        </record-->
-
 
         <record id="stock.view_picking_form_sve" model="ir.ui.view">
             <field name="inherit_id" ref="stock.view_picking_form"/>

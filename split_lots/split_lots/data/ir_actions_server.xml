@@ -33,16 +33,4 @@ action = {
             </field>
         </record>
     </data>
-    <data>
-        <record model="ir.actions.server" id="open_wizard_split_lots_server_action">
-            <field name="name">Split lots</field>
-            <field name="model_id" eval="ref('stock.model_stock_pack_operation')"/>
-            <field name="state">code</field>
-            <field name="condition">True</field>
-            <field name="sequence">5</field>
-            <field name="code">
-
-            </field>
-        </record>
-    </data>
 </openerp>
