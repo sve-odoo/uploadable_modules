@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="true">
+
+
+        <record model="ir.model" id="model_x_split_lots">
+            <field name="name">Split lots</field>
+            <field name="model">x_split_lots</field>
+            <field name="state">manual</field>           
+        </record>
+
+        <record model="ir.model" id="model_x_split_lots_line">
+            <field name="name">Split lots line</field>
+            <field name="model">x_split_lots_line</field>
+            <field name="state">manual</field>           
+        </record>
+
+        <record model="ir.model.fields" id="x_split_lots_line_x_name">
+            <field name="name">x_name</field>
+            <field name="field_description">Lot name</field>
+            <field name="ttype">char</field>
+            <field name="required" eval="1"/>
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_split_lots_line"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_split_lots_line_x_qty">
+            <field name="name">x_qty</field>
+            <field name="field_description">Qty</field>
+            <field name="ttype">float</field>
+            <field name="required" eval="1"/>
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_split_lots_line"/>
+        </record>
+
+        <record model="ir.model.fields" id="x_split_lots_line_x_split_lots_id">
+            <field name="name">x_split_lots_id</field>
+            <field name="field_description">Line</field>
+            <field name="ttype">many2one</field> 
+            <field name="relation">x_split_lots</field>
+            <field name="required" eval="1"/>       
+            <field name="state">manual</field>    
+            <field name="model_id" ref="model_x_split_lots_line"/>                     
+        </record>
+
+        <record model="ir.model.fields" id="x_split_lots_x_line_ids">
+            <field name="name">x_line_ids</field>
+            <field name="field_description">Lines</field>
+            <field name="ttype">one2many</field> 
+            <field name="relation">x_split_lots_line</field>
+            <field name="relation_field">x_split_lots_id</field>
+            <field name="required" eval="1"/>       
+            <field name="state">manual</field>       
+            <field name="model_id" ref="model_x_split_lots"/>                     
+        </record>
+
+
+    </data>
+</openerp>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="x_split_lots_form" model="ir.ui.view">
+            <field name="name">x_split_lots_form</field>
+            <field name="model">x_split_lots</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Split lots">
+                    <sheet>
+                        <group string="Split lots">
+                            <field name="x_line_ids" nolabel="1" context="{'default_x_qty': 1.0}">
+                                <tree editable="bottom">
+                                    <field name="x_name"/>
+                                    <field name="x_qty"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <footer>
+                            <button string="Merge" class="oe_highlight" name="%(split_lots_server_action)d" type="action"/> or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="x_split_lots_window_action">
+            <field name="name">Split lots</field>
+            <field name="res_model">x_split_lots</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'packop_id': active_id}</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="x_split_lots_form"/>
+        </record>
+
+        <!--record model="ir.values" id="x_merge_partner_tags_ir_value">
+            <field name="name">Merge partner tags</field>
+            <field name="model">res.partner.category</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('x_merge_partner_tags_window_action'))"/>
+        </record-->
+
+
+        <record id="stock.view_picking_form_sve" model="ir.ui.view">
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="name">stock.view_picking_form_sve</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <data>
+                    <page string="Operations" position="attributes">
+                        <attribute name="attrs"/>
+                    </page>
+                    <page string="Operations" position="inside">
+                        <button string="Generate pack operations"
+                                type="object"
+                                name="do_prepare_partial"/>
+                    </page>
+                        <field name="result_package_id" position="after">
+                            <button string="Split lots"
+                                    type="action"
+                                    name="%(x_split_lots_window_action)d"/>
+                        </field>
+                </data>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

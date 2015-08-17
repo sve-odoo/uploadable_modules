@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.actions.server" id="split_lots_server_action">
+            <field name="name">Split lots</field>
+            <field name="model_id" eval="ref('model_x_split_lots')"/>
+            <field name="state">code</field>
+            <field name="condition">True</field>
+            <field name="sequence">5</field>
+            <field name="code">
+Lot = env['stock.production.lot']
+packop = env['stock.pack.operation'].browse(context['packop_id'])
+new_qty = packop.product_qty
+for line in object.x_line_ids:
+    new_qty -= line.x_qty
+    line_lot = Lot.create({
+        'name': line.x_name,
+        'product_id': packop.product_id.id
+        })
+    packop.copy({
+        'product_qty': line.x_qty,
+        'lot_id': line_lot.id
+        })
+if new_qty > 0:
+    packop.write({'product_qty': new_qty})
+else:
+    packop.unlink()
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'reload',
+}
+
+            </field>
+        </record>
+    </data>
+    <data>
+        <record model="ir.actions.server" id="open_wizard_split_lots_server_action">
+            <field name="name">Split lots</field>
+            <field name="model_id" eval="ref('stock.model_stock_pack_operation')"/>
+            <field name="state">code</field>
+            <field name="condition">True</field>
+            <field name="sequence">5</field>
+            <field name="code">
+
+            </field>
+        </record>
+    </data>
+</openerp>
